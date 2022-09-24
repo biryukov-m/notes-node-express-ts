@@ -31,7 +31,7 @@ exports.Schemas = {
     note: (0, yup_1.object)().shape({
         title: (0, yup_1.string)().required(),
         text: (0, yup_1.string)().required(),
-        category: (0, yup_1.string)().oneOf(Object.keys(repositories_1.INITIAL_CATEGORIES)),
+        category: (0, yup_1.string)().oneOf(Object.keys(repositories_1.INITIAL_CATEGORIES)).required(),
         archived: (0, yup_1.bool)().default(false),
     }),
 };

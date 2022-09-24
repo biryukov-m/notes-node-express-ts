@@ -20,7 +20,7 @@ export const Schemas = {
   note: object().shape({
     title: string().required(),
     text: string().required(),
-    category: string().oneOf(Object.keys(INITIAL_CATEGORIES)),
+    category: string().oneOf(Object.keys(INITIAL_CATEGORIES)).required(),
     archived: bool().default(false),
   }),
 };

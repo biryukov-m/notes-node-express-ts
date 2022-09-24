@@ -75,6 +75,8 @@ const updateNoteRoute = (req, res) => {
                 return note;
             }
             else {
+                console.log("note!!!!!!!!", note);
+                console.log(Object.assign(Object.assign({}, note), updatedFields));
                 return Object.assign(Object.assign({}, note), updatedFields);
             }
         });

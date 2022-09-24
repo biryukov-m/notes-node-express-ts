@@ -89,6 +89,8 @@ export const updateNoteRoute = (req: Request, res: Response) => {
       if (note.id !== Number(req.params.id)) {
         return note;
       } else {
+        console.log("note!!!!!!!!", note);
+        console.log({ ...note, ...updatedFields });
         return { ...note, ...updatedFields };
       }
     });
