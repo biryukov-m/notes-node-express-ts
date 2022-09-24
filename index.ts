@@ -5,7 +5,7 @@ import { router } from "./routes";
 dotenv.config();
 
 const app: Express = express();
-const port = 1337;
+const port = 80;
 
 /** Routes */
 app.use("/", router);

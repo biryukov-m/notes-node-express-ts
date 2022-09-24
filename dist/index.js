@@ -8,7 +8,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const routes_1 = require("./routes");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-const port = 1337;
+const port = 80;
 /** Routes */
 app.use("/", routes_1.router);
 app.listen(port, () => {
