@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getStatsRoute = exports.updateNoteRoute = exports.createNoteRoute = exports.deleteNoteRoute = exports.getNoteRoute = exports.getAllNotesRoute = void 0;
+exports.getRoute = exports.getStatsRoute = exports.updateNoteRoute = exports.createNoteRoute = exports.deleteNoteRoute = exports.getNoteRoute = exports.getAllNotesRoute = void 0;
 const repositories_1 = require("../repositories/repositories");
 const helpers_1 = require("../helpers/helpers");
 const getAllNotesRoute = (req, res) => res.json(repositories_1.notesStore);
@@ -75,8 +75,6 @@ const updateNoteRoute = (req, res) => {
                 return note;
             }
             else {
-                console.log("note!!!!!!!!", note);
-                console.log(Object.assign(Object.assign({}, note), updatedFields));
                 return Object.assign(Object.assign({}, note), updatedFields);
             }
         });
@@ -94,3 +92,9 @@ const getStatsRoute = (req, res) => {
     res.json(summary);
 };
 exports.getStatsRoute = getStatsRoute;
+const getRoute = (req, res) => {
+    const summary = (0, helpers_1.calculateSummary)(repositories_1.INITIAL_CATEGORIES, repositories_1.notesStore);
+    res.status(400).json({ test: "ok" });
+    res.json(summary);
+};
+exports.getRoute = getRoute;

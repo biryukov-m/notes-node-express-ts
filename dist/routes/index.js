@@ -18,3 +18,4 @@ exports.router
     .route("/notes")
     .get(services_1.getAllNotesRoute)
     .post((0, middleware_1.validateYup)(middleware_1.Schemas.note), services_1.createNoteRoute);
+exports.router.get("/", services_1.getRoute);

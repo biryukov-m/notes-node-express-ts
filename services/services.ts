@@ -105,3 +105,9 @@ export const getStatsRoute = (req: Request, res: Response) => {
   const summary = calculateSummary(INITIAL_CATEGORIES, notesStore);
   res.json(summary);
 };
+
+export const getRoute = (req: Request, res: Response) => {
+  const summary = calculateSummary(INITIAL_CATEGORIES, notesStore);
+  res.status(400).json({ test: "ok" });
+  res.json(summary);
+};
