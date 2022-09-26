@@ -6,7 +6,6 @@ import {
   deleteNoteRoute,
   createNoteRoute,
   updateNoteRoute,
-  getRoute,
 } from "../services/services";
 import { Schemas, validateYup } from "../middleware/middleware";
 
@@ -24,5 +23,3 @@ router
   .route("/notes")
   .get(getAllNotesRoute)
   .post(validateYup(Schemas.note), createNoteRoute);
-
-router.get("/", getRoute);

@@ -6,7 +6,7 @@ import cors from "cors";
 dotenv.config();
 
 const app: Express = express();
-const port = 8080;
+const port = 80;
 
 app.use(cors());
 app.use("/", router);
