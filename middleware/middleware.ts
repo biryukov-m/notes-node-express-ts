@@ -1,4 +1,4 @@
-import { AnyObjectSchema, bool, object, string } from "yup";
+import { AnyObjectSchema, bool, object, string, ValidationError } from "yup";
 import { NextFunction, Request, Response } from "express";
 import { INITIAL_CATEGORIES } from "../store/store";
 
@@ -9,7 +9,13 @@ export const validateYup = (schema: AnyObjectSchema) => {
       res.locals.data = data;
       next();
     } catch (error) {
-      return res.status(422).json({ error });
+      if (error instanceof ValidationError) {
+        const validationError: ValidationError = error;
+        return res
+          .status(422)
+          .json(`Data validation error - ${validationError.message}`);
+      }
+      return res.status(500).json({ error });
     }
   };
 };

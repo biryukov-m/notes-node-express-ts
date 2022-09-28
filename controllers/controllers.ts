@@ -12,6 +12,7 @@ import {
 } from "../helpers/helpers";
 import { INITIAL_CATEGORIES, Note, Notes } from "../store/store";
 import {
+  createNoteService,
   deleteNoteService,
   getNoteService,
   getNotesService,
@@ -60,21 +61,11 @@ export const deleteNote = (req: Request, res: Response) => {
   }
 };
 
-export const createNoteRoute = (req: Request, res: Response) => {
+export const createNote = (req: Request, res: Response) => {
   try {
     const data = res.locals.data;
-    const newNote = {
-      id: nextNoteId(getNotesStore()),
-      date: getDate(),
-      title: data.title,
-      text: data.text,
-      category: data.category,
-      dates: parseDates(data.text),
-      archived: data.archived,
-    };
-
-    setNotesStore([...getNotesStore(), newNote]);
-    res.sendStatus(200);
+    const createdNote = createNoteService(data);
+    res.status(200).json(createdNote);
   } catch (error) {
     res.status(400).json(error);
   }

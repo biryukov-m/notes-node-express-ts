@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteNoteService = exports.getNoteService = exports.getNotesService = void 0;
+exports.createNoteService = exports.deleteNoteService = exports.getNoteService = exports.getNotesService = void 0;
 const repositories_1 = require("../repositories/repositories");
+const helpers_1 = require("../helpers/helpers");
 const getNotesService = () => (0, repositories_1.getNotesStore)();
 exports.getNotesService = getNotesService;
 const getNoteService = (noteId) => {
@@ -23,3 +24,18 @@ const deleteNoteService = (noteId) => {
     return null;
 };
 exports.deleteNoteService = deleteNoteService;
+const createNoteService = (data) => {
+    const notes = (0, repositories_1.getNotesStore)();
+    const newNote = {
+        id: (0, helpers_1.nextNoteId)(notes),
+        date: (0, helpers_1.getDate)(),
+        title: data.title,
+        text: data.text,
+        category: data.category,
+        dates: (0, helpers_1.parseDates)(data.text),
+        archived: data.archived,
+    };
+    (0, repositories_1.setNotesStore)([...notes, newNote]);
+    return newNote;
+};
+exports.createNoteService = createNoteService;

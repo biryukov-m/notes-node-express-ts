@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getStatsRoute = exports.updateNoteRoute = exports.createNoteRoute = exports.deleteNote = exports.getNote = exports.getAllNotes = void 0;
+exports.getStatsRoute = exports.updateNoteRoute = exports.createNote = exports.deleteNote = exports.getNote = exports.getAllNotes = void 0;
 const repositories_1 = require("../repositories/repositories");
 const helpers_1 = require("../helpers/helpers");
 const store_1 = require("../store/store");
@@ -51,26 +51,17 @@ const deleteNote = (req, res) => {
     }
 };
 exports.deleteNote = deleteNote;
-const createNoteRoute = (req, res) => {
+const createNote = (req, res) => {
     try {
         const data = res.locals.data;
-        const newNote = {
-            id: (0, helpers_1.nextNoteId)((0, repositories_1.getNotesStore)()),
-            date: (0, helpers_1.getDate)(),
-            title: data.title,
-            text: data.text,
-            category: data.category,
-            dates: (0, helpers_1.parseDates)(data.text),
-            archived: data.archived,
-        };
-        (0, repositories_1.setNotesStore)([...(0, repositories_1.getNotesStore)(), newNote]);
-        res.sendStatus(200);
+        const createdNote = (0, services_1.createNoteService)(data);
+        res.status(200).json(createdNote);
     }
     catch (error) {
         res.status(400).json(error);
     }
 };
-exports.createNoteRoute = createNoteRoute;
+exports.createNote = createNote;
 const updateNoteRoute = (req, res) => {
     try {
         const data = res.locals.data;

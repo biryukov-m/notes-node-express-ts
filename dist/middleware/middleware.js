@@ -20,7 +20,13 @@ const validateYup = (schema) => {
             next();
         }
         catch (error) {
-            return res.status(422).json({ error });
+            if (error instanceof yup_1.ValidationError) {
+                const validationError = error;
+                return res
+                    .status(422)
+                    .json(`Data validation error - ${validationError.message}`);
+            }
+            return res.status(500).json({ error });
         }
     });
 };

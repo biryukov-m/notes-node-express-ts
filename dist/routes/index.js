@@ -17,4 +17,4 @@ exports.router
 exports.router
     .route("/notes")
     .get(controllers_1.getAllNotes)
-    .post((0, middleware_1.validateYup)(middleware_1.Schemas.createNote), controllers_1.createNoteRoute);
+    .post((0, middleware_1.validateYup)(middleware_1.Schemas.createNote), controllers_1.createNote);
