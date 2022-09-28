@@ -11,14 +11,18 @@ import {
   getDate,
 } from "../helpers/helpers";
 import { INITIAL_CATEGORIES, Note, Notes } from "../store/store";
-import { getNoteService, getNotesService } from "../services/services";
+import {
+  deleteNoteService,
+  getNoteService,
+  getNotesService,
+} from "../services/services";
 
 export const getAllNotes = (req: Request, res: Response) => {
   try {
     const notes: Notes = getNotesService();
     res.json(notes);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).json({ error });
   }
 };
 
@@ -34,25 +38,25 @@ export const getNote = (req: Request, res: Response) => {
       : res.status(404).json(`Note with id: ${req.params.id} not found`);
   } catch (error) {
     error === TypeError
-      ? res.status(400).send("Note id must be a number")
-      : res.status(500).send(error);
+      ? res.status(400).json("Note id must be a number")
+      : res.status(500).json({ error });
   }
 };
 
-export const deleteNoteRoute = (req: Request, res: Response) => {
+export const deleteNote = (req: Request, res: Response) => {
   try {
-    let filtered = [...getNotesStore()].filter(
-      (note) => note.id !== Number(req.params.id)
-    );
-
-    if (filtered.length < notesStore.length) {
-      setNotesStore(filtered);
-      res.sendStatus(200);
-    } else {
-      res.sendStatus(404);
+    const id = Number(req.params.id);
+    if (!id) {
+      throw TypeError;
     }
+    const note: Note | null = deleteNoteService(id);
+    note
+      ? res.sendStatus(200)
+      : res.status(404).json(`Note with id: ${req.params.id} not found`);
   } catch (error) {
-    res.status(400).json({ error });
+    error === TypeError
+      ? res.status(400).json("Note id must be a number")
+      : res.status(500).json({ error });
   }
 };
 

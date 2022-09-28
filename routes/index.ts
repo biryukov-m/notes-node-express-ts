@@ -3,7 +3,7 @@ import {
   getAllNotes,
   getNote,
   getStatsRoute,
-  deleteNoteRoute,
+  deleteNote,
   createNoteRoute,
   updateNoteRoute,
 } from "../controllers/controllers";
@@ -16,7 +16,7 @@ router.get("/notes/stats", getStatsRoute);
 router
   .route("/notes/:id")
   .get(getNote)
-  .delete(deleteNoteRoute)
+  .delete(deleteNote)
   .patch(validateYup(Schemas.updateNote), updateNoteRoute);
 
 router

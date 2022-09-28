@@ -12,7 +12,7 @@ exports.router.get("/notes/stats", controllers_1.getStatsRoute);
 exports.router
     .route("/notes/:id")
     .get(controllers_1.getNote)
-    .delete(controllers_1.deleteNoteRoute)
+    .delete(controllers_1.deleteNote)
     .patch((0, middleware_1.validateYup)(middleware_1.Schemas.updateNote), controllers_1.updateNoteRoute);
 exports.router
     .route("/notes")

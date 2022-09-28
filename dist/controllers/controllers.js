@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getStatsRoute = exports.updateNoteRoute = exports.createNoteRoute = exports.deleteNoteRoute = exports.getNote = exports.getAllNotes = void 0;
+exports.getStatsRoute = exports.updateNoteRoute = exports.createNoteRoute = exports.deleteNote = exports.getNote = exports.getAllNotes = void 0;
 const repositories_1 = require("../repositories/repositories");
 const helpers_1 = require("../helpers/helpers");
 const store_1 = require("../store/store");
@@ -11,7 +11,7 @@ const getAllNotes = (req, res) => {
         res.json(notes);
     }
     catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({ error });
     }
 };
 exports.getAllNotes = getAllNotes;
@@ -28,27 +28,29 @@ const getNote = (req, res) => {
     }
     catch (error) {
         error === TypeError
-            ? res.status(400).send("Note id must be a number")
-            : res.status(500).send(error);
+            ? res.status(400).json("Note id must be a number")
+            : res.status(500).json({ error });
     }
 };
 exports.getNote = getNote;
-const deleteNoteRoute = (req, res) => {
+const deleteNote = (req, res) => {
     try {
-        let filtered = [...(0, repositories_1.getNotesStore)()].filter((note) => note.id !== Number(req.params.id));
-        if (filtered.length < repositories_1.notesStore.length) {
-            (0, repositories_1.setNotesStore)(filtered);
-            res.sendStatus(200);
+        const id = Number(req.params.id);
+        if (!id) {
+            throw TypeError;
         }
-        else {
-            res.sendStatus(404);
-        }
+        const note = (0, services_1.deleteNoteService)(id);
+        note
+            ? res.sendStatus(200)
+            : res.status(404).json(`Note with id: ${req.params.id} not found`);
     }
     catch (error) {
-        res.status(400).json({ error });
+        error === TypeError
+            ? res.status(400).json("Note id must be a number")
+            : res.status(500).json({ error });
     }
 };
-exports.deleteNoteRoute = deleteNoteRoute;
+exports.deleteNote = deleteNote;
 const createNoteRoute = (req, res) => {
     try {
         const data = res.locals.data;
