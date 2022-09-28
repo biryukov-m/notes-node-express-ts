@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import {
-  INITIAL_CATEGORIES,
   notesStore,
   setNotesStore,
   getNotesStore,
@@ -12,6 +11,7 @@ import {
   nextNoteId,
   getDate,
 } from "../helpers/helpers";
+import { INITIAL_CATEGORIES } from "../store/store";
 
 export const getAllNotesRoute = (req: Request, res: Response) =>
   res.json(notesStore);
@@ -59,8 +59,7 @@ export const createNoteRoute = (req: Request, res: Response) => {
       date: getDate(),
       title: data.title,
       text: data.text,
-      category:
-        INITIAL_CATEGORIES[data.category as keyof typeof INITIAL_CATEGORIES],
+      category: data.category,
       dates: parseDates(data.text),
       archived: data.archived,
     };
@@ -69,35 +68,31 @@ export const createNoteRoute = (req: Request, res: Response) => {
     res.sendStatus(200);
   } catch (error) {
     res.status(400).json(error);
-    console.log(error);
   }
 };
 
 export const updateNoteRoute = (req: Request, res: Response) => {
   try {
     const data = res.locals.data;
-    const updatedFields = {
-      title: data.title,
-      text: data.text,
-      category:
-        INITIAL_CATEGORIES[data.category as keyof typeof INITIAL_CATEGORIES],
-      dates: parseDates(data.text),
-      archived: data.archived,
-    };
     const notes = getNotesStore();
     const newNotes: Note[] = [...notes].map((note) => {
       if (note.id !== Number(req.params.id)) {
         return note;
       } else {
+        const updatedFields = {
+          title: data.title ? data.title : note.title,
+          text: data.text ? data.text : note.text,
+          category: data.category ? data.category : note.category,
+          dates: data.text ? parseDates(data.text) : note.dates,
+          archived: data.archived ? data.archived : note.archived,
+        };
         return { ...note, ...updatedFields };
       }
     });
-
     setNotesStore(newNotes);
     res.sendStatus(200);
   } catch (error) {
     res.status(400).json(error);
-    console.log(error);
   }
 };
 

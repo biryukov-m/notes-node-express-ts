@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRoute = exports.getStatsRoute = exports.updateNoteRoute = exports.createNoteRoute = exports.deleteNoteRoute = exports.getNoteRoute = exports.getAllNotesRoute = void 0;
+exports.getStatsRoute = exports.updateNoteRoute = exports.createNoteRoute = exports.deleteNoteRoute = exports.getNoteRoute = exports.getAllNotesRoute = void 0;
 const repositories_1 = require("../repositories/repositories");
 const helpers_1 = require("../helpers/helpers");
+const store_1 = require("../store/store");
 const getAllNotesRoute = (req, res) => res.json(repositories_1.notesStore);
 exports.getAllNotesRoute = getAllNotesRoute;
 const getNoteRoute = (req, res) => {
@@ -46,7 +47,7 @@ const createNoteRoute = (req, res) => {
             date: (0, helpers_1.getDate)(),
             title: data.title,
             text: data.text,
-            category: repositories_1.INITIAL_CATEGORIES[data.category],
+            category: data.category,
             dates: (0, helpers_1.parseDates)(data.text),
             archived: data.archived,
         };
@@ -55,26 +56,25 @@ const createNoteRoute = (req, res) => {
     }
     catch (error) {
         res.status(400).json(error);
-        console.log(error);
     }
 };
 exports.createNoteRoute = createNoteRoute;
 const updateNoteRoute = (req, res) => {
     try {
         const data = res.locals.data;
-        const updatedFields = {
-            title: data.title,
-            text: data.text,
-            category: repositories_1.INITIAL_CATEGORIES[data.category],
-            dates: (0, helpers_1.parseDates)(data.text),
-            archived: data.archived,
-        };
         const notes = (0, repositories_1.getNotesStore)();
         const newNotes = [...notes].map((note) => {
             if (note.id !== Number(req.params.id)) {
                 return note;
             }
             else {
+                const updatedFields = {
+                    title: data.title ? data.title : note.title,
+                    text: data.text ? data.text : note.text,
+                    category: data.category ? data.category : note.category,
+                    dates: data.text ? (0, helpers_1.parseDates)(data.text) : note.dates,
+                    archived: data.archived ? data.archived : note.archived,
+                };
                 return Object.assign(Object.assign({}, note), updatedFields);
             }
         });
@@ -83,18 +83,11 @@ const updateNoteRoute = (req, res) => {
     }
     catch (error) {
         res.status(400).json(error);
-        console.log(error);
     }
 };
 exports.updateNoteRoute = updateNoteRoute;
 const getStatsRoute = (req, res) => {
-    const summary = (0, helpers_1.calculateSummary)(repositories_1.INITIAL_CATEGORIES, repositories_1.notesStore);
+    const summary = (0, helpers_1.calculateSummary)(store_1.INITIAL_CATEGORIES, repositories_1.notesStore);
     res.json(summary);
 };
 exports.getStatsRoute = getStatsRoute;
-const getRoute = (req, res) => {
-    const summary = (0, helpers_1.calculateSummary)(repositories_1.INITIAL_CATEGORIES, repositories_1.notesStore);
-    res.status(400).json({ test: "ok" });
-    res.json(summary);
-};
-exports.getRoute = getRoute;

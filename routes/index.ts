@@ -17,9 +17,9 @@ router
   .route("/notes/:id")
   .get(getNoteRoute)
   .delete(deleteNoteRoute)
-  .patch(validateYup(Schemas.note), updateNoteRoute);
+  .patch(validateYup(Schemas.updateNote), updateNoteRoute);
 
 router
   .route("/notes")
   .get(getAllNotesRoute)
-  .post(validateYup(Schemas.note), createNoteRoute);
+  .post(validateYup(Schemas.createNote), createNoteRoute);

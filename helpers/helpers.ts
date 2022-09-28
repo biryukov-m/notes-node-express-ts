@@ -26,32 +26,28 @@ export const getDate = () => {
 
 export type SummaryData = {
   [key: string]: {
+    name: string;
     active: number;
     archived: number;
-    selector: string;
-    name: string;
   };
 };
 
 export const calculateSummary = (categories: Categories, notes: Note[]) => {
   let summary: SummaryData = {};
 
-  for (const key in categories) {
-    const category = categories[key];
-
-    summary[category.selector] = {
+  for (const category of categories) {
+    summary[category] = {
+      name: category,
       active: 0,
       archived: 0,
-      selector: category.selector,
-      name: category.name,
     };
   }
 
   notes.forEach((note) => {
     if (note.archived) {
-      summary[note.category.selector].archived += 1;
+      summary[note.category].archived += 1;
     } else {
-      summary[note.category.selector].active += 1;
+      summary[note.category].active += 1;
     }
   });
 

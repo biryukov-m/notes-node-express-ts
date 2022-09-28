@@ -13,9 +13,8 @@ exports.router
     .route("/notes/:id")
     .get(services_1.getNoteRoute)
     .delete(services_1.deleteNoteRoute)
-    .patch((0, middleware_1.validateYup)(middleware_1.Schemas.note), services_1.updateNoteRoute);
+    .patch((0, middleware_1.validateYup)(middleware_1.Schemas.updateNote), services_1.updateNoteRoute);
 exports.router
     .route("/notes")
     .get(services_1.getAllNotesRoute)
-    .post((0, middleware_1.validateYup)(middleware_1.Schemas.note), services_1.createNoteRoute);
-exports.router.get("/", services_1.getRoute);
+    .post((0, middleware_1.validateYup)(middleware_1.Schemas.createNote), services_1.createNoteRoute);
