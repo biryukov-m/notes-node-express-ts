@@ -13,7 +13,7 @@ exports.router
     .route("/notes/:id")
     .get(controllers_1.getNote)
     .delete(controllers_1.deleteNote)
-    .patch((0, middleware_1.validateYup)(middleware_1.Schemas.updateNote), controllers_1.updateNoteRoute);
+    .patch((0, middleware_1.validateYup)(middleware_1.Schemas.updateNote), controllers_1.updateNote);
 exports.router
     .route("/notes")
     .get(controllers_1.getAllNotes)

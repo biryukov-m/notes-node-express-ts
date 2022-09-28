@@ -16,6 +16,7 @@ import {
   deleteNoteService,
   getNoteService,
   getNotesService,
+  updateNoteService,
 } from "../services/services";
 
 export const getAllNotes = (req: Request, res: Response) => {
@@ -30,7 +31,7 @@ export const getAllNotes = (req: Request, res: Response) => {
 export const getNote = (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
-    if (!id) {
+    if (isNaN(id)) {
       throw TypeError;
     }
     const note: Note | null = getNoteService(id);
@@ -47,7 +48,7 @@ export const getNote = (req: Request, res: Response) => {
 export const deleteNote = (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
-    if (!id) {
+    if (isNaN(id)) {
       throw TypeError;
     }
     const note: Note | null = deleteNoteService(id);
@@ -71,28 +72,21 @@ export const createNote = (req: Request, res: Response) => {
   }
 };
 
-export const updateNoteRoute = (req: Request, res: Response) => {
+export const updateNote = (req: Request, res: Response) => {
   try {
     const data = res.locals.data;
-    const notes = getNotesStore();
-    const newNotes: Note[] = [...notes].map((note) => {
-      if (note.id !== Number(req.params.id)) {
-        return note;
-      } else {
-        const updatedFields = {
-          title: data.title ? data.title : note.title,
-          text: data.text ? data.text : note.text,
-          category: data.category ? data.category : note.category,
-          dates: data.text ? parseDates(data.text) : note.dates,
-          archived: data.archived ? data.archived : note.archived,
-        };
-        return { ...note, ...updatedFields };
-      }
-    });
-    setNotesStore(newNotes);
-    res.sendStatus(200);
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+      throw TypeError;
+    }
+    const updatedNote = updateNoteService(data, id);
+    updatedNote
+      ? res.status(200).json(updatedNote)
+      : res.status(404).json(`Note with id: ${req.params.id} not found`);
   } catch (error) {
-    res.status(400).json(error);
+    error === TypeError
+      ? res.status(400).json("Note id must be a number")
+      : res.status(500).json({ error });
   }
 };
 

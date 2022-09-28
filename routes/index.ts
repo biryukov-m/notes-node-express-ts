@@ -5,7 +5,7 @@ import {
   getStatsRoute,
   deleteNote,
   createNote,
-  updateNoteRoute,
+  updateNote,
 } from "../controllers/controllers";
 import { Schemas, validateYup } from "../middleware/middleware";
 
@@ -17,7 +17,7 @@ router
   .route("/notes/:id")
   .get(getNote)
   .delete(deleteNote)
-  .patch(validateYup(Schemas.updateNote), updateNoteRoute);
+  .patch(validateYup(Schemas.updateNote), updateNote);
 
 router
   .route("/notes")

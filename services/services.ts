@@ -42,3 +42,31 @@ export const createNoteService = (data: CreateNoteData) => {
   setNotesStore([...notes, newNote]);
   return newNote;
 };
+
+type UpdateNoteData = {
+  title?: string;
+  text?: string;
+  category?: string;
+  archived?: boolean;
+};
+export const updateNoteService = (data: UpdateNoteData, noteId: Number) => {
+  const notes = getNotesStore();
+  let updatedNote;
+  const newNotes: Note[] = notes.map((note) => {
+    if (note.id !== noteId) {
+      return note;
+    } else {
+      const updatedFields = {
+        title: data.title ? data.title : note.title,
+        text: data.text ? data.text : note.text,
+        category: data.category ? data.category : note.category,
+        dates: data.text ? parseDates(data.text) : note.dates,
+        archived: data.archived ? data.archived : note.archived,
+      };
+      updatedNote = { ...note, ...updatedFields };
+      return updatedNote;
+    }
+  });
+  setNotesStore(newNotes);
+  return updatedNote;
+};

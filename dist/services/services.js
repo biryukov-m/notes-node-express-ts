@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createNoteService = exports.deleteNoteService = exports.getNoteService = exports.getNotesService = void 0;
+exports.updateNoteService = exports.createNoteService = exports.deleteNoteService = exports.getNoteService = exports.getNotesService = void 0;
 const repositories_1 = require("../repositories/repositories");
 const helpers_1 = require("../helpers/helpers");
 const getNotesService = () => (0, repositories_1.getNotesStore)();
@@ -39,3 +39,26 @@ const createNoteService = (data) => {
     return newNote;
 };
 exports.createNoteService = createNoteService;
+const updateNoteService = (data, noteId) => {
+    const notes = (0, repositories_1.getNotesStore)();
+    let updatedNote;
+    const newNotes = notes.map((note) => {
+        if (note.id !== noteId) {
+            return note;
+        }
+        else {
+            const updatedFields = {
+                title: data.title ? data.title : note.title,
+                text: data.text ? data.text : note.text,
+                category: data.category ? data.category : note.category,
+                dates: data.text ? (0, helpers_1.parseDates)(data.text) : note.dates,
+                archived: data.archived ? data.archived : note.archived,
+            };
+            updatedNote = Object.assign(Object.assign({}, note), updatedFields);
+            return updatedNote;
+        }
+    });
+    (0, repositories_1.setNotesStore)(newNotes);
+    return updatedNote;
+};
+exports.updateNoteService = updateNoteService;
