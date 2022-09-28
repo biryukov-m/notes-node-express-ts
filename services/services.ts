@@ -1,6 +1,11 @@
 import { getNotesStore, setNotesStore } from "../repositories/repositories";
-import { nextNoteId, getDate, parseDates } from "../helpers/helpers";
-import { Note, Notes } from "../store/store";
+import {
+  nextNoteId,
+  getDate,
+  parseDates,
+  calculateSummary,
+} from "../helpers/helpers";
+import { Note, Notes, INITIAL_CATEGORIES as categories } from "../store/store";
 
 export const getNotesService = () => getNotesStore();
 
@@ -69,4 +74,9 @@ export const updateNoteService = (data: UpdateNoteData, noteId: Number) => {
   });
   setNotesStore(newNotes);
   return updatedNote;
+};
+
+export const getStatsService = () => {
+  const notes = getNotesStore();
+  return calculateSummary(categories, notes);
 };

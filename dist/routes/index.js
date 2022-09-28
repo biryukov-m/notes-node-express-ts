@@ -8,7 +8,7 @@ const express_1 = __importDefault(require("express"));
 const controllers_1 = require("../controllers/controllers");
 const middleware_1 = require("../middleware/middleware");
 exports.router = express_1.default.Router();
-exports.router.get("/notes/stats", controllers_1.getStatsRoute);
+exports.router.get("/notes/stats", controllers_1.getStats);
 exports.router
     .route("/notes/:id")
     .get(controllers_1.getNote)

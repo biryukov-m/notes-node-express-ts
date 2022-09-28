@@ -1,9 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getStatsRoute = exports.updateNote = exports.createNote = exports.deleteNote = exports.getNote = exports.getAllNotes = void 0;
-const repositories_1 = require("../repositories/repositories");
-const helpers_1 = require("../helpers/helpers");
-const store_1 = require("../store/store");
+exports.getStats = exports.updateNote = exports.createNote = exports.deleteNote = exports.getNote = exports.getAllNotes = void 0;
 const services_1 = require("../services/services");
 const getAllNotes = (req, res) => {
     try {
@@ -81,8 +78,12 @@ const updateNote = (req, res) => {
     }
 };
 exports.updateNote = updateNote;
-const getStatsRoute = (req, res) => {
-    const summary = (0, helpers_1.calculateSummary)(store_1.INITIAL_CATEGORIES, repositories_1.notesStore);
-    res.json(summary);
+const getStats = (req, res) => {
+    try {
+        res.status(200).json((0, services_1.getStatsService)());
+    }
+    catch (error) {
+        res.status(500).json({ error });
+    }
 };
-exports.getStatsRoute = getStatsRoute;
+exports.getStats = getStats;

@@ -1,22 +1,12 @@
 import { Request, Response } from "express";
-import {
-  notesStore,
-  setNotesStore,
-  getNotesStore,
-} from "../repositories/repositories";
-import {
-  calculateSummary,
-  parseDates,
-  nextNoteId,
-  getDate,
-} from "../helpers/helpers";
-import { INITIAL_CATEGORIES, Note, Notes } from "../store/store";
+import { Note, Notes } from "../store/store";
 import {
   createNoteService,
   deleteNoteService,
   getNoteService,
   getNotesService,
   updateNoteService,
+  getStatsService,
 } from "../services/services";
 
 export const getAllNotes = (req: Request, res: Response) => {
@@ -90,7 +80,10 @@ export const updateNote = (req: Request, res: Response) => {
   }
 };
 
-export const getStatsRoute = (req: Request, res: Response) => {
-  const summary = calculateSummary(INITIAL_CATEGORIES, notesStore);
-  res.json(summary);
+export const getStats = (req: Request, res: Response) => {
+  try {
+    res.status(200).json(getStatsService());
+  } catch (error) {
+    res.status(500).json({ error });
+  }
 };

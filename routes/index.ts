@@ -2,7 +2,7 @@ import express from "express";
 import {
   getAllNotes,
   getNote,
-  getStatsRoute,
+  getStats,
   deleteNote,
   createNote,
   updateNote,
@@ -11,7 +11,7 @@ import { Schemas, validateYup } from "../middleware/middleware";
 
 export const router = express.Router();
 
-router.get("/notes/stats", getStatsRoute);
+router.get("/notes/stats", getStats);
 
 router
   .route("/notes/:id")
