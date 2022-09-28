@@ -1,12 +1,12 @@
 import express from "express";
 import {
-  getAllNotesRoute,
-  getNoteRoute,
+  getAllNotes,
+  getNote,
   getStatsRoute,
   deleteNoteRoute,
   createNoteRoute,
   updateNoteRoute,
-} from "../services/services";
+} from "../controllers/controllers";
 import { Schemas, validateYup } from "../middleware/middleware";
 
 export const router = express.Router();
@@ -15,11 +15,11 @@ router.get("/notes/stats", getStatsRoute);
 
 router
   .route("/notes/:id")
-  .get(getNoteRoute)
+  .get(getNote)
   .delete(deleteNoteRoute)
   .patch(validateYup(Schemas.updateNote), updateNoteRoute);
 
 router
   .route("/notes")
-  .get(getAllNotesRoute)
+  .get(getAllNotes)
   .post(validateYup(Schemas.createNote), createNoteRoute);

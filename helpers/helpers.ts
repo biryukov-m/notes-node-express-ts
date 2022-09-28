@@ -1,4 +1,4 @@
-import { Note, Categories } from "../repositories/repositories";
+import { Note, Categories } from "../store/store";
 
 const MONTHS = [
   "January",
