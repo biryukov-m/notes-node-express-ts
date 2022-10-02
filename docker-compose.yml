@@ -5,7 +5,7 @@ services:
     restart: always
     build: .
     ports:
-      - ${PORT}:${PORT}
+      - ${APP_PORT}:${APP_PORT}
     depends_on:
       - db
     volumes:
@@ -22,5 +22,19 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
 
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4:5.5
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      - PGADMIN_LISTEN_PORT=${PGADMIN_LISTEN_PORT}
+    ports:
+      - "8080:${PGADMIN_LISTEN_PORT}"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
 volumes:
   data: {}
+  pgadmin-data: {}
